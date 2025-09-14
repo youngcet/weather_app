@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:open_weather_example_flutter/src/constants/app_colors.dart';
 import 'package:open_weather_example_flutter/src/features/weather/application/providers.dart';
+import 'package:open_weather_example_flutter/src/features/weather/data/api_exception.dart';
+import 'package:open_weather_example_flutter/src/features/weather/widgets/custom_snackbar.dart';
 import 'package:provider/provider.dart';
 
 class CitySearchBox extends StatefulWidget {
@@ -89,7 +91,19 @@ class _CitySearchRowState extends State<CitySearchBox> {
     final provider = context.read<WeatherProvider>();
     provider.city = _searchController.text;
 
-    await provider.getWeatherData();
-    await provider.getForecastData();
+    try {
+      await provider.getWeatherData();
+      await provider.getForecastData();
+    } on NoInternetConnectionException catch (e) {
+      if (mounted) CustomSnackBar.show(context, e.message);
+    } on CityNotFoundException catch (e) {
+     if (mounted) CustomSnackBar.show(context, e.message);
+    } on APIException catch (e) {
+      if (mounted) CustomSnackBar.show(context, e.message);
+    } on UnknownException {
+      if (mounted) CustomSnackBar.show(context, "Something unexpected happened");
+    } catch (e) {
+      if (mounted) CustomSnackBar.show(context, e.toString());
+    }
   }
 }

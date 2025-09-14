@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:open_weather_example_flutter/src/constants/app_colors.dart';
-import 'package:open_weather_example_flutter/src/constants/strings.dart';
+import 'package:open_weather_example_flutter/src/constants/app_strings.dart';
 import 'package:open_weather_example_flutter/src/features/weather/application/providers.dart';
 import 'package:open_weather_example_flutter/src/features/weather/models/weather_data.dart';
 import 'package:open_weather_example_flutter/src/features/weather/presentation/weather_icon_image.dart';
@@ -17,7 +17,7 @@ class CurrentWeather extends StatelessWidget {
         final city = data.$1;
         final weather = data.$2;
         final error = data.$3;
-
+       
         // display errors
         if (error != null){
           return Column(
@@ -32,7 +32,7 @@ class CurrentWeather extends StatelessWidget {
             ],
           );
         }
-
+        
         if (weather == null) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,

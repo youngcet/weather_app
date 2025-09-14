@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:open_weather_example_flutter/src/api/api.dart';
 import 'package:open_weather_example_flutter/src/api/api_keys.dart';
+import 'package:open_weather_example_flutter/src/features/weather/data/api_exception.dart';
 import 'package:open_weather_example_flutter/src/features/weather/data/weather_repository.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_weather_example_flutter/src/features/weather/models/forecast_data.dart';
@@ -34,9 +35,19 @@ class WeatherProvider extends ChangeNotifier {
 
       // get forecast data
       await getForecastData();
-    }catch (e){
-      error = e.toString();
-       throw Exception(e);
+    }on InvalidApiKeyException catch (e) {
+      error = 'Error: ${e.message}';
+      rethrow;
+    } on NoInternetConnectionException catch (e) {
+       error = 'Error: ${e.message}';
+    } on CityNotFoundException catch (e) {
+      error = 'Error: ${e.message}';
+    } on APIException catch (e) {
+      error = 'Error: ${e.message}';
+    } on UnknownException {
+      error = 'Error: Something unexpected happened';
+    } catch (e) {
+      error = 'Error: $e';
     }
   }
 
@@ -47,7 +58,7 @@ class WeatherProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       error = e.toString();
-      throw Exception(e);
+      rethrow;
     }
   }
 }

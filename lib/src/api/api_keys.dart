@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_weather_example_flutter/src/api/api.dart';
-import 'package:open_weather_example_flutter/src/constants/strings.dart';
+import 'package:open_weather_example_flutter/src/constants/app_strings.dart';
 import 'package:open_weather_example_flutter/src/features/weather/data/weather_repository.dart';
 
 /// To get an API key, sign up here:

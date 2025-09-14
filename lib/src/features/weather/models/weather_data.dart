@@ -56,6 +56,4 @@ class WeatherData {
       icon: weather['icon'] as String? ?? '01d',
     );
   }
-
-  String get iconUrl => 'https://openweathermap.org/img/wn/$icon@2x.png';
 }

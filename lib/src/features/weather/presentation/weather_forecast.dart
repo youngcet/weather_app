@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:open_weather_example_flutter/src/constants/strings.dart';
+import 'package:open_weather_example_flutter/src/constants/app_strings.dart';
 import 'package:open_weather_example_flutter/src/features/weather/models/forecast_data.dart';
 
 
@@ -19,7 +19,7 @@ class ForecastWeather extends StatelessWidget {
       builder: (context, data, _) {
         final forecast = data.$2;
 
-        if (forecast == null) {
+        if (forecast!.isEmpty) {
           return const Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
