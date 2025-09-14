@@ -19,6 +19,10 @@ class _CitySearchRowState extends State<CitySearchBox> {
   void initState() {
     super.initState();
     _searchController.text = context.read<WeatherProvider>().city;
+    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _searchWeather();
+    });
   }
 
   @override
@@ -27,7 +31,6 @@ class _CitySearchRowState extends State<CitySearchBox> {
     super.dispose();
   }
 
-  // circular radius
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -37,12 +40,29 @@ class _CitySearchRowState extends State<CitySearchBox> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Expanded(
+            Expanded(
               child: TextField(
-                //TODO make component functional and add style
+                style: const TextStyle(color: Colors.black),
+                controller: _searchController,
+                textInputAction: TextInputAction.search,
+                decoration: const InputDecoration(
+                  hintText: 'Enter city',
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(_radius),
+                      bottomLeft: Radius.circular(_radius),
+                    ),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                onSubmitted: (_) => _searchWeather()
               ),
             ),
             InkWell(
+              onTap: _searchWeather,
               child: Container(
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(
@@ -57,15 +77,19 @@ class _CitySearchRowState extends State<CitySearchBox> {
                   child: Text('search', style: Theme.of(context).textTheme.bodyLarge),
                 ),
               ),
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                context.read<WeatherProvider>().city = _searchController.text;
-                //TODO search weather
-              },
             )
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _searchWeather() async {
+    FocusScope.of(context).unfocus();
+    final provider = context.read<WeatherProvider>();
+    provider.city = _searchController.text;
+
+    await provider.getWeatherData();
+    await provider.getForecastData();
   }
 }

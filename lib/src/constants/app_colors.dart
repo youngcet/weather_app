@@ -5,4 +5,5 @@ class AppColors {
   static const rainBlueDark = Color(0xFF364699);
   static const rainGradient = [rainBlueLight, rainBlueDark];
   static const accentColor = Color(0xFFe96e50);
+  static const red = Color(0xFFFF0000);
 }
